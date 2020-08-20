@@ -1,0 +1,39 @@
+  Cases to handle:
+1) Left-direction to left-direction - valid
+2) Left-direction to up-direction - valid
+3) Left-direction to down-direction - valid
+4) Left-direction to right-direction - invalid
+5) Up-direction to left-direction - valid
+6) Up-direction to up-direction - valid
+7) Up-direction to right-direction - valid
+8) Up-direction to down-direction - invalid
+9) Right-direction to up-direction - valid
+10) Up-direction to right-direction - valid
+11) Right-direction to down-direction - valid
+12) Right-direction to left-direction - invalid
+13) Down-direction to left-direction - valid
+14) Down-direction to right-direction - valid
+15) Down-direction to down-direction - valid
+16) Down-direction to up-direction - invalid
+
+  
+  Arguments in tests: first value is current direction, second
+value is next direction, third value is validation. Tests (0 is
+used for "left-direction", 1 is used for "up-direction", 2 is
+used for "right-direction", 3 is used for "down-direction"):
+1.1 (0, 0, 1)
+1.2 (0, 1, 1)
+1.3 (0, 2, 0)
+1.4 (0, 3, 1)
+2.1 (1, 0, 1)
+2.2 (1, 1, 1)
+2.3 (1, 2, 1)
+2.4 (1, 3, 0)
+3.1 (2, 0, 0)
+3.2 (2, 1, 1)
+3.3 (2, 2, 1)
+3.4 (2, 3, 1)
+4.1 (3, 0, 1)
+4.2 (3, 1, 0)
+4.3 (3, 2, 1)
+4.4 (3, 3, 1)
