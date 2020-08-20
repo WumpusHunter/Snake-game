@@ -1,0 +1,23 @@
+  Cases to handle:
+1) Zero difference by x-coordinate and zero difference by y-coordinate
+2) A positive difference by x-coordinate and zero difference by y-coordinate
+3) Zero difference by x-coordinate and a positive difference by y-coordinate
+4) A positive difference by x-coordinate and a positive difference by y-coordinate
+5) A negative difference by x-coordinate and zero difference by y-coordinate
+6) Zero difference by x-coordinate and a negative difference by y-coordinate
+7) A negative difference by x-coordinate and a positive difference by y-coordinate
+8) A positive difference by x-coordinate and a negative difference by y-coordinate
+9) A negative difference by x-coordinate and a negative difference by y-coordinate
+
+  Tests:
+1.1 ({ (0, 0), 50, 50, 10, 5 }, (0, 0))
+1.2 ({ (200, 100), 100, 25, 3, 3 }, (123, 0))
+1.3 ({ (350, 425), 50, 100, 4, 6 }, (0, 321))
+1.4 ({ (125, 75), 80, 35, 12, 8 }, (225, 175))
+1.5 ({ (750, 500), 350, 225, 4, 2 }, (-321, 0))
+1.6 ({ (415, 280), 40, 20, 9, 15 }, (0, -123))
+1.7 ({ (630, 795), 75, 90, 5, 3 }, (-250, -250))
+1.8 ({ (0, 0), 300, 150, 4, 3 }, (475, 500))
+1.9 ({ (0, 0), 150, 300, 3, 2 }, (125, 70))
+2.1 ({ (1492, 561), 21, 16, 23, 7 }, (1669, 295))
+2.2 ({ (649, 231), 37, 445, 60, 1 }, (568, 47))

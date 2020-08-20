@@ -1,0 +1,35 @@
+  Cases to handle:
+1) Any point with a positive size of cells and a positive number of lines - valid
+2) Any point with a non-positive size of cells and a positive number of lines - invalid
+3) Any point with a positive size of cells and a non-positive number of lines - invalid
+4) Any point with a non-positive size of cells and a non-positive number of lines - invalid
+  Additional case for valid (1) case:
+1) Passed to constructor point is located the same as the grid's only vertex
+2) Passed to constructor size of cells is the actual size of cells
+3) Passed to constructor number of lines is the actual number of lines
+
+  Tests (1 is used for "valid", 0 is used for "invalid"):
+1.1 ({ (0, 0), 50, 50, 10, 5 }, 1)
+1.2 ({ (200, 100), 100, 25, 3, 3 }, 1)
+1.3 ({ (200, 400), 50, 100, 4, 6 }, 1)
+2.1 ({ (150, 300), 0, 100, 12, 8 }, 0)
+2.2 ({ (250, 50), 50, 0, 3, 6 }, 0)
+2.3 ({ (200, 100), 0, 0, 5, 5 }, 0)
+2.4 ({ (100, 200), -25, 25, 50, 25 }, 0)
+2.5 ({ (0, 0), 25, -25, 25, 50 }, 0 )
+2.6 ({ (475, 625), -100, -100, 100, 100 }, 0)
+3.1 ({ (250, 500), 40, 20, 0, 7 }, 0)
+3.2 ({ (75, 75), 30, 50, 15, 0 }, 0)
+3.3 ({ (750, 1000), 10, 10, 0, 0 }, 0)
+3.4 ({ (225, 400), 16, 4, -75, 50 }, 0)
+3.5 ({ (100, 50), 3, 9, 150, -100 }, 0)
+3.6 ({ (0, 0), 25, 10, -50, -25 }, 0)
+4.1 ({ (625, 450), -250, 500, -10, 15 }, 0)
+4.2 ({ (300, 300), -125, 75, 5, -5 }, 0)
+4.3 ({ (150, 0), 25, -25, -3, 3 }, 0)
+4.4 ({ (0, 150), 50, -75, 12, -8 }, 0)
+4.5 ({ (0, 0), -250, 150, -9, -3 }, 0)
+4.6 ({ (0, 0), 100, -500, -16, -32  }, 0)
+4.7 ({ (860, 520), -80, -160, -2, -4 }, 0)
+5.1 ({ (1492, 561), 21, 16, 23, 7 }, 1)
+5.2 ({ (1020, 173), -44, -138, 40, 45 }, 0)

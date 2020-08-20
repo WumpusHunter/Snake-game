@@ -1,0 +1,26 @@
+ SNAKE GAME
+ Snake is a video game concept where the player maneuvers a line
+that grows in length, with the line itself being a primary obs-
+tacle. The concept originated in the 1976 arcade game Blockade.
+ GAMEPLAY
+ The player controls an object on a bordered plane. As it moves
+forward, it leaves a trail behind, resembling a moving snake.
+The snake has a specific length, so there is a moving tail a fixed
+number of units away from the head. The player loses when the snake
+runs into the screen border or itself.
+ A sole player attempts to eat items by running into them with the
+head of the snake. Each item eaten makes the snake longer, so con-
+trolling is progressively more difficult.
+ CONTROL
+ The snake moves forward automatically, everything you need to do
+is to choose the direction of moving. To choose the direction of
+moving use arrows-buttons, that is,
+1) Left-arrow  - to move in the left direction;
+2) Up-arrow    - to move in the up direction;
+3) Right-arrow - to move in the right direction;
+4) Down-arrow  - to move in the down direction.
+Remember: you can't rotate the snake's head to opposite direction,
+for instance, from the left to the right, or from the up to the
+down.
+ ADDITIONAL NOTES
+ Good luck on the game, try to eat as much as you can!
