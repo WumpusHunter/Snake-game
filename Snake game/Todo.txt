@@ -1,42 +1,5 @@
-• Design and implementation of the graphics +
-  • The field (i.e., a grid) +
-  • The snake +
-  • The fruit +
-
-• Design and implementation of the GUI +
-  • Game window +
-    • Game menu +
-      • New game button +
-      • Pause button +
-      • Quit button +
-    • Help button +
-    • Help output box +
-    • Current score output box +
-    • Maximum score output box +
-
-• Structuring +
-  • Divided source and header files +
-  • Added invariants for the GUI, hence, error handling +
-
 • Optimisation
   • The help message's reading from file ?
-  • Shortcuts for the widgets +
-
-• Testing of the graphics +
-  • The grid +
-  • The snake +
-  • Random move +
-
-• Testing of the GUI +
-  • Game window +
-    • Game menu +
-      • New game button +
-      • Pause button +
-      • Quit button +
-    • Help button +
-    • Help output box +
-    • Current score output box +
-    • Maximum score output box +
 
 • Documentation
 
