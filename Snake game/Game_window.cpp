@@ -29,6 +29,33 @@ namespace Graph_lib {
     constexpr int new_game_ind = 0; // New game button's index
     constexpr int pause_ind = 1;    // Pause button's index
     constexpr int quit_ind = 2;     // Quit button's index
+    // Default parameters for widgets
+    const string help_text = R"( SNAKE GAME
+ Snake is a video game concept where the player maneuvers a line
+that grows in length, with the line itself being a primary obstacle.
+The concept originated in the 1976 arcade game Blockade.
+ GAMEPLAY
+The player controls an object on a bordered plane. As it moves for-
+ward, it leaves a trail behind, resembling a moving snake. The snake
+has a specific length, so there is a moving tail a fixed number of units
+away from the head. The player loses when the snake runs into the
+screen border or itself.
+ A sole player attempts to eat items by running into them with the he-
+ad of the snake. Each item eaten makes the snake longer, so con-
+trolling is progressively more difficult.
+ CONTROL
+ The snake moves forward automatically, everything you need to do
+is to choose the direction of moving. To choose the direction of mov-
+ing use arrow-buttons, that is,
+1) Left-arrow - to move in the left direction;
+2) Up-arrow - to move in the up direction;
+3) Right-arrow - to move in the right direction;
+4) Down-arrow - to move in the down direction.
+Remember: you can't rotate the snake's head to the opposite direc-
+tion, for instance, from the left to the right, or from the up to the
+down.
+ ADDITIONAL NOTES
+ Good luck on the game, try to eat as much as you can!)";
 
     // Constructs window with top-left angle at xy, of size w * h (if
     // it's not less than min, which is 400 * 300), labeled with lab
@@ -68,32 +95,7 @@ namespace Graph_lib {
         put_on_top(snake);
         // Default value for widgets
         game_menu.hide();
-        help_box.put(" SNAKE GAME\n"
-            " Snake is a video game concept where the player maneuvers a line\n"
-            "that grows in length, with the line itself being a primary obstacle.\n"
-            "The concept originated in the 1976 arcade game Blockade.\n"
-            " GAMEPLAY\n"
-            " The player controls an object on a bordered plane. As it moves for-\n"
-            "ward, it leaves a trail behind, resembling a moving snake. The snake\n"
-            "has a specific length, so there is a moving tail a fixed number of units\n"
-            "away from the head. The player loses when the snake runs into the\n"
-            "screen border or itself.\n"
-            " A sole player attempts to eat items by running into them with the he-\n"
-            "ad of the snake. Each item eaten makes the snake longer, so con-\n"
-            "trolling is progressively more difficult.\n"
-            " CONTROL\n"
-            " The snake moves forward automatically, everything you need to do\n"
-            "is to choose the direction of moving. To choose the direction of mov-\n"
-            "ing use arrow-buttons, that is,\n"
-            "1) Left-arrow - to move in the left direction;\n"
-            "2) Up-arrow - to move in the up direction;\n"
-            "3) Right-arrow - to move in the right direction;\n"
-            "4) Down-arrow - to move in the down direction.\n"
-            "Remember: you can't rotate the snake's head to the opposite direc-\n"
-            "tion, for instance, from the left to the right, or from the up to the\n"
-            "down.\n"
-            " ADDITIONAL NOTES\n"
-            " Good luck on the game, try to eat as much as you can!\n");
+        help_box.put(help_text);
         help_box.hide();
         score_box.put(0);
         max_score_box.put(0);
@@ -133,42 +135,48 @@ namespace Graph_lib {
     // Callback function for game_loop
     void Snake_window::cb_game_loop(Address pw)
     {
-        constexpr double delay = 0.25;                  // Delay of game's loop
-        reference_to<Snake_window>(pw).game_loop();     // Call of action function
-        Fl::repeat_timeout(delay, cb_game_loop, pw);    // Execute delay of game's loop
+        constexpr double delay = 0.25;                          // Delay of game's loop
+        Snake_window& self = reference_to<Snake_window>(pw);    // Self-reference
+        self.game_loop();                                       // Call of action function
+        Fl::repeat_timeout(delay, cb_game_loop, pw);            // Execute delay of game's loop
     }
 
     // Callback function for pause
     void Snake_window::cb_pause(Address, Address pw)
     {
-        reference_to<Snake_window>(pw).pause();
-        reference_to<Snake_window>(pw).game();
+        Snake_window& self = reference_to<Snake_window>(pw);    // Self-reference
+        self.pause();
+        self.game();
     }
 
     // Callback function for new game
     void Snake_window::cb_new_game(Address, Address pw)
     {
-        reference_to<Snake_window>(pw).new_game();
-        reference_to<Snake_window>(pw).game();
+        Snake_window& self = reference_to<Snake_window>(pw);    // Self-reference
+        self.new_game();
+        self.game();
     }
 
     // Callback function for quit
     void Snake_window::cb_quit(Address, Address pw)
     {
-        reference_to<Snake_window>(pw).quit();
-        reference_to<Snake_window>(pw).game();
+        Snake_window& self = reference_to<Snake_window>(pw);    // Self-reference
+        self.quit();
+        self.game();
     }
 
     // Callback function for game
     void Snake_window::cb_game(Address, Address pw)
     {
-        reference_to<Snake_window>(pw).game();
+        Snake_window& self = reference_to<Snake_window>(pw);    // Self-reference
+        self.game();
     }
 
     // Callback function for help
     void Snake_window::cb_help(Address, Address pw)
     {
-        reference_to<Snake_window>(pw).help();
+        Snake_window& self = reference_to<Snake_window>(pw);    // Self-reference
+        self.help();
     }
 
     // Starts game's loop
