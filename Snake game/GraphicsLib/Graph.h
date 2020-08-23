@@ -121,6 +121,10 @@ namespace Graph_lib {
 
 		T& operator[](int i) { return *v[i]; }
 		const T& operator[](int i) const { return *v[i]; }
+		T& front() { return *v.front(); }
+		T& back() { return *v.back(); }
+		const T& front() const { return *v.front(); }
+		const T& back() const { return *v.back(); }
 		int size() const { return v.size(); }
 
 		typename vector<T*>::iterator begin() { return v.begin(); }

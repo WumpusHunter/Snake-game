@@ -12,9 +12,6 @@ namespace Graph_lib {
 
     //------------------------------------------------------------------------------
 
-    // Indexes of snake's body
-    constexpr int head_ind = 0;
-
     // Constructs snake with top left-angle of its head at xy, of sz
     // cells, and with size of each cell equal to cell_w * cell_h
     Snake::Snake(Point xy, int cell_w, int cell_h, int sz)
@@ -57,32 +54,32 @@ namespace Graph_lib {
         // Move head one cell in its direction
         switch (head) {
         case Direction::left:       // Left-side
-            body[head_ind].move(-body[head_ind].width(), 0);
+            body_head().move(-body_head().width(), 0);
             break;
         case Direction::up:         // Up-side
-            body[head_ind].move(0, -body[head_ind].height());
+            body_head().move(0, -body_head().height());
             break;
         case Direction::right:      // Right-side
-            body[head_ind].move(body[head_ind].width(), 0);
+            body_head().move(body_head().width(), 0);
             break;
         case Direction::down:       // Down-side
-            body[head_ind].move(0, body[head_ind].height());
+            body_head().move(0, body_head().height());
             break;
         }
-        set_point(0, body[head_ind].point(0));         // Update location of snake's head
+        set_point(0, body_head().point(0));         // Update location of snake's head
     }
 
     // Grows snake in length, that is, adds one cell to its tail
     void Snake::grow_length()
     {
-        const Point tail = body[body.size() - 1].point(0);      // Tail's coordinate
+        const Point tail = body_tail().point(0);      // Tail's coordinate
         move_forward();
         // Add new cell into body at previous tail's location
-        body.push_back(new Rectangle{ tail, body[head_ind].width(), body[head_ind].height() });
+        body.push_back(new Rectangle{ tail, body_head().width(), body_head().height() });
         // Set same parameters for new tail as for all body
-        body[body.size() - 1].set_color(color());
-        body[body.size() - 1].set_fill_color(fill_color());
-        body[body.size() - 1].set_style(style());
+        body_tail().set_color(color());
+        body_tail().set_fill_color(fill_color());
+        body_tail().set_style(style());
     }
 
     // Shrinks snake in length, that is, removes num cells from its body, starting with tail
@@ -117,9 +114,7 @@ namespace Graph_lib {
     // Sets c as fill color of snake's head
     void Snake::head_set_fill_color(Color c)
     {
-        assert(body.begin() != body.end()       // Error handling
-            && "Bad Snake: can't set fill color to head of empty snake");
-        body[head_ind].set_fill_color(c);
+        body_head().set_fill_color(c);
     }
 
     // Sets ls as line style of snake's body
@@ -146,7 +141,29 @@ namespace Graph_lib {
     {
         assert(body.cbegin() != body.cend()     // Error handling
             && "Bad Snake: can't get head of empty snake");
-        return body[head_ind];
+        return body.front();
+    }
+
+    // Gets snake's tail
+    const Rectangle& Snake::body_tail() const
+    {
+        assert(body.cbegin() != body.cend()     // Error handling
+            && "Bad Snake: can't get tail of empty snake");
+        return body.back();
+    }
+
+    // Gets snake's head
+    Rectangle& Snake::body_head()
+    {
+        const Snake& self = static_cast<const Snake&>(*this);       // Self-reference
+        return const_cast<Rectangle&>(self.body_head());            // Cast constness from const-version
+    }
+
+    // Gets snake's tail
+    Rectangle& Snake::body_tail()
+    {
+        const Snake& self = static_cast<const Snake&>(*this);       // Self-reference
+        return const_cast<Rectangle&>(self.body_tail());            // Cast constness from const-version
     }
 
     // Determines either cell is one of snake's body's cells
@@ -155,16 +172,17 @@ namespace Graph_lib {
         // Search for cell in snake's body, located same as cell, and compare parameters
         return find_if(body.cbegin(), body.cend(), [&cell](const Rectangle* rect)
             { return rect->point(0) == cell.point(0); }) != body.cend()
-            && body[0].width() == cell.width() && body[0].height() == cell.height();
+            && body_head().width() == cell.width() && body_head().height() == cell.height();
     }
 
     // Determines either cell is one of snake's body's cells, except its head
     bool Snake::is_body_except_head(const Rectangle& cell) const
     {
         // Search for cell in snake's body, located same as cell, except snake's head, and compare parameters
-        return body.cbegin() != body.cend() ? find_if(next(body.cbegin()), body.cend(),
+        constexpr int head_num = 1;     // Order number of head
+        return body.size() > head_num ? find_if(next(body.cbegin()), body.cend(),
             [&cell](const Rectangle* rect) { return rect->point(0) == cell.point(0); }) != body.cend()
-            && body[0].width() == cell.width() && body[0].height() == cell.height() : false;
+            && body_head().width() == cell.width() && body_head().height() == cell.height() : false;
     }
 
     //------------------------------------------------------------------------------

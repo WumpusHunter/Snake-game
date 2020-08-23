@@ -123,16 +123,18 @@ namespace Graph_lib {
 	void Text_box::put(const string& str)
 	{
 		if (pw == nullptr)		// Error handling
-			throw invalid_argument("Bad Text_box: can't put value into unattached box");
-		reference_to<Fl_Text_Display>(pw).buffer()->text(str.c_str());
+			throw invalid_argument("Bad Text_box: can't put text into unattached box");
+		Fl_Text_Display& self = reference_to<Fl_Text_Display>(pw);		// Self-reference
+		self.buffer()->text(str.c_str());			// Put Text into text box's buffer
 	}
 
 	// Gets text from text box's buffer; requires text box to be attached to window
 	string Text_box::get() const
 	{
 		if (pw == nullptr)		// Error handling
-			throw invalid_argument("Bad Text_box: can't put value into unattached box");
-		return string{ reference_to<Fl_Text_Display>(pw).buffer()->text() };
+			throw invalid_argument("Bad Text_box: can't put text into unattached box");
+		Fl_Text_Display& self = reference_to<Fl_Text_Display>(pw);		// Self-reference
+		return string{ self.buffer()->text() };		// Get text from text box's buffer
 	}
 
 	// Attaches text box to window
@@ -140,9 +142,9 @@ namespace Graph_lib {
 	{
 		// Create text box with top-left angle at loc, of size width * height, labeled label
 		pw = new Fl_Text_Display(loc.x, loc.y, width, height, label.c_str());
+		Fl_Text_Display& self = reference_to<Fl_Text_Display>(pw);		// Self-reference
 		own = &win;
-		// Create buffer for text box
-		reference_to<Fl_Text_Display>(pw).buffer(new Fl_Text_Buffer());
+		self.buffer(new Fl_Text_Buffer());			// Create buffer for text box
 	}
 
 	//------------------------------------------------------------------------------
