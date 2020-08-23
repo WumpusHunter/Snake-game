@@ -2,6 +2,7 @@
 
 //------------------------------------------------------------------------------
 
+#include <cassert>
 #include "Game_graph.h"
 #include "RandomNumber/Generator.h"
 
@@ -116,8 +117,8 @@ namespace Graph_lib {
     // Sets c as fill color of snake's head
     void Snake::head_set_fill_color(Color c)
     {
-        if (body.begin() == body.end())     // Error handling
-            throw out_of_range("Bad Snake: can't set fill color to head of empty snake");
+        assert(body.begin() != body.end()       // Error handling
+            && "Bad Snake: can't set fill color to head of empty snake");
         body[head_ind].set_fill_color(c);
     }
 
@@ -143,8 +144,8 @@ namespace Graph_lib {
     // Gets snake's head
     const Rectangle& Snake::body_head() const
     {
-        if (body.cbegin() == body.cend())       // Error handling
-            throw out_of_range("Bad Snake: can't get head of empty snake");
+        assert(body.cbegin() != body.cend()     // Error handling
+            && "Bad Snake: can't get head of empty snake");
         return body[head_ind];
     }
 
