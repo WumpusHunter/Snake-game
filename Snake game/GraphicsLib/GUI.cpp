@@ -86,6 +86,22 @@ namespace Graph_lib {
 
 	int Menu::attach(Button& b)
 	{
+		init(b);
+		selection.push_back(b);
+		return int(selection.size() - 1);
+	}
+
+	int Menu::attach(Button* p)
+	{
+		//	owned.push_back(p);
+		init(*p);
+		selection.push_back(p);
+		return int(selection.size() - 1);
+	}
+
+	// Sets initial location and size to b
+	void Menu::init(Button& b)
+	{
 		b.width = width;
 		b.height = height;
 
@@ -99,14 +115,6 @@ namespace Graph_lib {
 			offset += b.height;
 			break;
 		}
-		selection.push_back(&b);
-		return int(selection.size() - 1);
-	}
-
-	int Menu::attach(Button* p)
-	{
-		//	owned.push_back(p);
-		return attach(*p);
 	}
 
 	//------------------------------------------------------------------------------

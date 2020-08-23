@@ -66,6 +66,9 @@ down.
         fruit{ Point{ x_max() - cell_w * 2, y_max() / 2 }, cell_w, cell_h },
         game_menu{ Point{ 0, 0 }, button_w, widget_h, Menu::Kind::horizontal, "Game" },
         game_button{ Point{ 0, 0 }, button_w, widget_h, "&Game", cb_game },
+        new_game_button{ Point{ 0, 0 }, 0, 0, "&New game", cb_new_game },
+        pause_button{ Point{ 0, 0 }, 0, 0, "&Pause", cb_pause },
+        quit_button{ Point{ 0, 0 }, 0, 0, "&Quit", cb_quit },
         help_button{ Point{ button_w, 0 }, button_w, widget_h, "&Help", cb_help },
         help_box{ Point{ 0, cell_h }, x_max(), y_max() - cell_h, "" },
         score_box{ Point{ cell_w * 2, widget_h }, out_box_w, widget_h, "Current score: " },
@@ -81,9 +84,9 @@ down.
         attach(snake);
         attach(fruit);
         // Attach widgets to window
-        game_menu.attach(new Button{ Point{ 0, 0 }, 0, 0, "&New game", cb_new_game });
-        game_menu.attach(new Button{ Point{ 0, 0 }, 0, 0, "&Pause", cb_pause });
-        game_menu.attach(new Button{ Point{ 0, 0 }, 0, 0, "&Quit", cb_quit });
+        game_menu.attach(new_game_button);
+        game_menu.attach(pause_button);
+        game_menu.attach(quit_button);
         attach(game_menu);
         attach(game_button);
         attach(help_button);
