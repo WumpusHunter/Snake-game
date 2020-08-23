@@ -37,10 +37,16 @@ namespace Graph_lib {
 
         // Access to parameters
         const Rectangle& body_head() const;
+        const Rectangle& body_tail() const;
         Direction direction() const { return head; }
         int length() const { return body.size(); }
         bool is_body(const Rectangle& cell) const;
         bool is_body_except_head(const Rectangle& cell) const;
+
+    protected:
+        // Access to parameters
+        Rectangle& body_head();
+        Rectangle& body_tail();
 
     private:
         Vector_ref<Rectangle> body;

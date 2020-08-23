@@ -191,12 +191,13 @@ down.
     void Snake_window::game_loop()
     {
         // Snake's bumping (obstacle is snake's body or field's borders)
-        if (snake.is_body_except_head(snake.body_head())) {     // Snake's body as obstacle
+        const Snake& const_snake = snake;
+        if (snake.is_body_except_head(const_snake.body_head())) {   // Snake's body as obstacle
             cout << "Bumped into the snake's body\n";
             // Pause after losed game
             return Fl::add_timeout(0.0, [](Address pw) { cb_pause(nullptr, pw); }, this);;
         }
-        if (!is_grid(field, snake.body_head())) {               // Grid's border as obstacle
+        if (!is_grid(field, const_snake.body_head())) {             // Grid's border as obstacle
             cout << "Bumped into the grid's border\n";
             // Pause after losed game
             return Fl::add_timeout(0.0, [](Address pw) { cb_pause(nullptr, pw); }, this);
