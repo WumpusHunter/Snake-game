@@ -133,6 +133,8 @@ namespace Graph_lib {
             own = &win;
         }
 
+    private:
+        void init(Button& b);       // Initial location and size of b
     };
 
     //------------------------------------------------------------------------------

@@ -52,6 +52,9 @@ namespace Graph_lib {
         // GUI
         Menu game_menu;
         Button game_button;
+        Button new_game_button;
+        Button pause_button;
+        Button quit_button;
         Button help_button;
         Text_box help_box;
         Out_box score_box;
