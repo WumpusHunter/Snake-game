@@ -29,8 +29,8 @@ namespace Graph_lib {
     void Snake::draw_lines() const
     {
         // Draw each cell of body
-        for (int i = 0; i < body.size(); ++i)
-            body[i].draw();
+        for (auto pos = body.cbegin(); pos != body.cend(); ++pos)
+            (*pos)->draw();
     }
 
     // Moves snake by dx at x-coordinate and dy at y-coordinate 
@@ -38,20 +38,24 @@ namespace Graph_lib {
     {
         Shape::move(dx, dy);
         // Move each cell of body
-        for (int i = 0; i < body.size(); ++i)
-            body[i].move(dx, dy);
+        for (auto pos = body.begin(); pos != body.end(); ++pos)
+            (*pos)->move(dx, dy);
     }
 
-    // Moves snake forward, that is, moves each cell from tail to head
-    // to its next neighbour, and moves head one cell in its direction
+    // Moves snake forward, that is, adds new head and removes old tail
     void Snake::move_forward()
     {
-        // Move each cell from tail to head to its next neighbour
-        for (int i = body.size() - 1; i > 0; --i) {
-            body[i].move(-body[i].point(0).x, -body[i].point(0).y);         // Move to initial point
-            body[i].move(body[i - 1].point(0).x, body[i - 1].point(0).y);   // Move to neigbhour's point
-        }
-        // Move head one cell in its direction
+        grow_length();      // Add new head
+        shrink_length();    // Remove old tail
+    }
+
+    // Grows snake in length, that is, adds one cell into its body as its new head
+    void Snake::grow_length()
+    {
+        Rectangle& prev_head = body_head();     // Previous head
+        // Add new cell into snake's body as its new head
+        body.push_front(new Rectangle{ prev_head.point(0), prev_head.width(), prev_head.height() });
+        // Move head one cell forward in its direction
         switch (head) {
         case Direction::left:       // Left-side
             body_head().move(-body_head().width(), 0);
@@ -67,19 +71,14 @@ namespace Graph_lib {
             break;
         }
         set_point(0, body_head().point(0));         // Update location of snake's head
-    }
-
-    // Grows snake in length, that is, adds one cell to its tail
-    void Snake::grow_length()
-    {
-        const Point tail = body_tail().point(0);      // Tail's coordinate
-        move_forward();
-        // Add new cell into body at previous tail's location
-        body.push_back(new Rectangle{ tail, body_head().width(), body_head().height() });
-        // Set same parameters for new tail as for all body
-        body_tail().set_color(color());
-        body_tail().set_fill_color(fill_color());
-        body_tail().set_style(style());
+        // Set same parameters for new head as for old head
+        body_head().set_color(prev_head.color());
+        body_head().set_fill_color(prev_head.fill_color());
+        body_head().set_style(prev_head.style());
+        // Set same parameters for old head as for all body
+        prev_head.set_color(color());
+        prev_head.set_fill_color(fill_color());
+        prev_head.set_style(style());
     }
 
     // Shrinks snake in length, that is, removes num cells from its body, starting with tail
@@ -98,8 +97,8 @@ namespace Graph_lib {
     {
         Shape::set_color(c);
         // Set c as color of lines to each cell of body
-        for (int i = 0; i < body.size(); ++i)
-            body[i].set_color(c);
+        for (auto pos = body.begin(); pos != body.end(); ++pos)
+            (*pos)->set_color(c);
     }
 
     // Sets c as fill color of snake's body
@@ -107,8 +106,8 @@ namespace Graph_lib {
     {
         Shape::set_fill_color(c);
         // Set c as fill color to each cell of body
-        for (int i = 0; i < body.size(); ++i)
-            body[i].set_fill_color(c);
+        for (auto pos = body.begin(); pos != body.end(); ++pos)
+            (*pos)->set_fill_color(c);
     }
 
     // Sets c as fill color of snake's head
@@ -122,8 +121,8 @@ namespace Graph_lib {
     {
         Shape::set_style(ls);
         // Set ls as line style to each cell of body
-        for (int i = 0; i < body.size(); ++i)
-            body[i].set_style(ls);
+        for (auto pos = body.begin(); pos != body.end(); ++pos)
+            (*pos)->set_style(ls);
     }
 
     // Sets d as direction of snake's head
@@ -187,16 +186,24 @@ namespace Graph_lib {
 
     //------------------------------------------------------------------------------
 
+    // Moves s to xy; requires s to have only one point
+    void move_to(Shape* s, Point xy)
+    {
+        if (s == nullptr)     // Error handling
+            throw invalid_argument("Bad move_to: can't move unexisted Shape");
+        s->move(xy.x - s->point(0).x, xy.y - s->point(0).y);
+    }
+
     // Moves rect randomly in range [xy.x; xy.x + w] for x-coordinate and [xy.y; xy.y + h] for
     // y-coordinate, with xy as original point, w as width of range and h as height of range
     void random_move(Rectangle& rect, Point xy, int w, int h)
     {
         if (w < 0 || h < 0)     // Error handling
             throw invalid_argument("Bad random_move: invalid range for coordinates");
-        // Move to original location, that is, xy
-        rect.move(-(rect.point(0).x - xy.x), -(rect.point(0).y - xy.y));
-        rect.move(rect.width() * randint(0, w / rect.width()),      // Random x-coordinate
-            rect.height() * randint(0, h / rect.height()));         // Random y-coordinate
+        // Random x and y coordinates
+        const int rand_x = xy.x + rect.width() * randint(0, w / rect.width()),
+            rand_y = xy.y + rect.height() * randint(0, h / rect.height());
+        move_to(&rect, Point{ rand_x, rand_y });     // Move to random point
     }
 
     //------------------------------------------------------------------------------

@@ -97,49 +97,134 @@ namespace Graph_lib {
 
 	//------------------------------------------------------------------------------
 
-	template<class T> class Vector_ref {
-		vector<T*> v;
-		vector<T*> owned;
+	template<typename T>		// Requires Element<T>()
+	class Vector_ref {
 	public:
+		// Type definitions
+		using value_type = T;
+		using pointer = value_type*;
+		using const_pointer = const value_type*;
+		using reference = value_type&;
+		using const_reference = const value_type&;
+		using size_type = int;
+		using iterator = typename vector<pointer>::iterator;
+		using const_iterator = typename vector<pointer>::const_iterator;
+
+		// Construction
 		Vector_ref() {}
 
-		Vector_ref(T* a, T* b = 0, T* c = 0, T* d = 0)
-		{
-			if (a) push_back(a);
-			if (b) push_back(b);
-			if (c) push_back(c);
-			if (d) push_back(d);
-		}
+		// Destruction
+		~Vector_ref() { for (size_type i = 0; i < owned.size(); ++i) delete owned[i]; }
 
-		~Vector_ref() { for (int i = 0; i < owned.size(); ++i) delete owned[i]; }
-
-		void push_back(T& s) { v.push_back(&s); }
-		void push_back(T* p) { v.push_back(p); owned.push_back(p); }
+		// Insertion and removal
+		void push_back(reference val) { vec.push_back(&val); }
+		void push_back(pointer ptr) { vec.push_back(ptr); owned.push_back(ptr); }
 		void pop_back(bool own);
 
 		// ???void erase(???)
 
-		T& operator[](int i) { return *v[i]; }
-		const T& operator[](int i) const { return *v[i]; }
-		T& front() { return *v.front(); }
-		T& back() { return *v.back(); }
-		const T& front() const { return *v.front(); }
-		const T& back() const { return *v.back(); }
-		int size() const { return v.size(); }
+		// Access to elements
+		reference operator[](int i) { return *vec[i]; }
+		const_reference  operator[](int i) const { return *vec[i]; }
+		reference front() { return *vec.front(); }
+		reference back() { return *vec.back(); }
+		const_reference front() const { return *vec.front(); }
+		const_reference back() const { return *vec.back(); }
+		size_type size() const { return vec.size(); }
 
-		typename vector<T*>::iterator begin() { return v.begin(); }
-		typename vector<T*>::iterator end() { return v.end(); }
-		typename vector<T*>::const_iterator cbegin() const { return v.cbegin(); }
-		typename vector<T*>::const_iterator cend() const { return v.cend(); }
+		// Iterator functions
+		typename iterator begin() { return vec.begin(); }
+		typename iterator end() { return vec.end(); }
+		typename const_iterator cbegin() const { return vec.cbegin(); }
+		typename const_iterator cend() const { return vec.cend(); }
+
+	private:
+		vector<pointer> vec;		// All elements
+		vector<pointer> owned;		// Owned element
 	};
 
 	// Removes last element; if own is true removes last owned element as well
-	template<class T>
+	template<typename T>		// Requires Element<T>()
 	void Vector_ref<T>::pop_back(bool own)
 	{
-		if (v.empty() || own && owned.empty())		// Error handling
+		if (vec.empty() || own && owned.empty())		// Error handling
 			throw out_of_range("Bad Vector_ref: can't remove from empty vector");
-		v.pop_back();
+		vec.pop_back();
+		// Removal of owned element
+		if (own) {
+			delete owned.back();
+			owned.pop_back();
+		}
+	}
+
+	//------------------------------------------------------------------------------
+
+	template<typename T>		// Requires Element<T>()
+	class List_ref {
+	public:
+		// Type definitions
+		using value_type = T;
+		using pointer = value_type*;
+		using const_pointer = const value_type*;
+		using reference = value_type&;
+		using const_reference = const value_type&;
+		using size_type = int;
+		using iterator = typename list<pointer>::iterator;
+		using const_iterator = typename list<pointer>::const_iterator;
+
+		// Construction
+		List_ref() = default;
+
+		// Destruction
+		~List_ref() { for (auto& ptr : owned) delete ptr; }
+
+		// Insertion and removal
+		void push_front(reference val) { lst.push_front(&val); }
+		void push_front(pointer ptr) { lst.push_front(ptr); owned.push_front(ptr); }
+		void push_back(reference val) { lst.push_back(&val); }
+		void push_back(pointer ptr) { lst.push_back(ptr); owned.push_back(ptr); }
+		void pop_front(bool own);
+		void pop_back(bool own);
+
+		// Access to elements
+		reference front() { return *lst.front(); }
+		reference back() { return *lst.back(); }
+		const_reference front() const { return *lst.front(); }
+		const_reference back() const { return *lst.back(); }
+		size_type size() const { return lst.size(); }
+
+		// Iterator functions
+		typename iterator begin() { return lst.begin(); }
+		typename iterator end() { return lst.end(); }
+		typename const_iterator cbegin() const { return lst.cbegin(); }
+		typename const_iterator cend() const { return lst.cend(); }
+
+	private:
+		list<pointer> lst;		// All elements
+		list<pointer> owned;	// Owned elements
+	};
+
+	// Removes first element; if own is true, then removes first owned element as well
+	template<typename T>		// Requires Element<T>()
+	void List_ref<T>::pop_front(bool own)
+	{
+		if (lst.empty() || own && owned.empty())		// Error handling
+			throw out_of_range("Bad List_ref: can't remove from empty list");
+		lst.pop_front();
+		// Removal of owned element
+		if (own) {
+			delete owned.front();
+			owned.pop_front();
+		}
+	}
+
+	// Removes last element; if own is true removes last owned element as well
+	template<typename T>		// Requires Element<T>()
+	void List_ref<T>::pop_back(bool own)
+	{
+		if (lst.empty() || own && owned.empty())		// Error handling
+			throw out_of_range("Bad List_ref: can't remove from empty list");
+		lst.pop_back();
 		// Removal of owned element
 		if (own) {
 			delete owned.back();

@@ -26,7 +26,7 @@ namespace Graph_lib {
         void move(int dx, int dy) override;
         void move_forward();
         void grow_length();
-        void shrink_length(int num);
+        void shrink_length(int num = 1);
 
         // Modification of parameters
         void set_color(Color c);
@@ -49,13 +49,14 @@ namespace Graph_lib {
         Rectangle& body_tail();
 
     private:
-        Vector_ref<Rectangle> body;
+        List_ref<Rectangle> body;
         Direction head;                 // Direction of head
     };
 
     //------------------------------------------------------------------------------
 
-    // Helper function
+    // Helper functions
+    void move_to(Shape* s, Point xy);
     void random_move(Rectangle& rect, Point xy, int w, int h);
 
     //------------------------------------------------------------------------------
