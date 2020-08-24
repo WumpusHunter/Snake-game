@@ -25,10 +25,6 @@ namespace Graph_lib {
     constexpr int widget_h = 25;    // Widgets' height
     constexpr int out_box_w = 30;   // Output boxes' width
     constexpr int button_w = 100;   // Buttons' width
-    // Indexes of game menu's buttons
-    constexpr int new_game_ind = 0; // New game button's index
-    constexpr int pause_ind = 1;    // Pause button's index
-    constexpr int quit_ind = 2;     // Quit button's index
     // Default parameters for widgets
     const string help_text = R"( SNAKE GAME
  Snake is a video game concept where the player maneuvers a line
@@ -267,13 +263,13 @@ down.
         // Show help box
         if (!help_box.visible()) {      // Help box is invisible
             if (!is_pause()) pause();   // Pause game
-            game_menu.selection[pause_ind].deactivate();
+            pause_button.deactivate();
             hide_graphics();
             help_box.show();
         }
         // Hide help box
         else {                          // Help box is visible
-            game_menu.selection[pause_ind].activate();
+            pause_button.activate();
             help_box.hide();
             show_graphics();
         }
@@ -288,7 +284,7 @@ down.
     // Writes current score and max score into score boxes, if required
     void Snake_window::put_score()
     {
-        int score = current_score();
+        const int score = current_score();
         score_box.put(score);                   // Write current score
         if (score > max_score_box.get_int())    // New record
             max_score_box.put(score);           // Write max score
