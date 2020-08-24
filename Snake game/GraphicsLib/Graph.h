@@ -124,8 +124,8 @@ namespace Graph_lib {
 		// ???void erase(???)
 
 		// Access to elements
-		reference operator[](int i) { return *vec[i]; }
-		const_reference  operator[](int i) const { return *vec[i]; }
+		reference operator[](size_type i) { return *vec[i]; }
+		const_reference  operator[](size_type i) const { return *vec[i]; }
 		reference front() { return *vec.front(); }
 		reference back() { return *vec.back(); }
 		const_reference front() const { return *vec.front(); }

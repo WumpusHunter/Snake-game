@@ -186,7 +186,7 @@ namespace Graph_lib {
 
     //------------------------------------------------------------------------------
 
-    // Moves s to xy; requires s to have only one point
+    // Moves s to xy
     void move_to(Shape* s, Point xy)
     {
         if (s == nullptr)     // Error handling

@@ -112,22 +112,18 @@ down.
             return 1;
         case FL_KEYBOARD: {                 // Keys, pressed using keyboard
             switch (Fl::event_key()) {
-                // Arrow-keys used to change snake's direction
+            // Arrow-keys used to change snake's direction
             case FL_Left:                   // Left-arrow
                 snake.set_direction(Snake::Direction::left);
-                cout << "Changed direction to the left (" << static_cast<int>(snake.direction()) << ")\n";
                 return 1;
             case FL_Up:                     // Up-arrow
                 snake.set_direction(Snake::Direction::up);
-                cout << "Changed direction to the up (" << static_cast<int>(snake.direction()) << ")\n";
                 return 1;
             case FL_Right:                  // Right-arrow
                 snake.set_direction(Snake::Direction::right);
-                cout << "Changed direction to the right (" << static_cast<int>(snake.direction()) << ")\n";
                 return 1;
             case FL_Down:                   // Down-arrow
                 snake.set_direction(Snake::Direction::down);
-                cout << "Changed direction to the down (" << static_cast<int>(snake.direction()) << ")\n";
                 return 1;
             }
         }
@@ -187,35 +183,26 @@ down.
     {
         constexpr double delay = 1.0;                   // Delay before first timeout
         Fl::add_timeout(delay, cb_game_loop, this);     // Start game's loop and delay proccess
-        cout << "Started the game\n";
     }
 
     // Starts all proccesses of game's loop
     void Snake_window::game_loop()
     {
-        // Snake's bumping (obstacle is snake's body or field's borders)
+        // Snake's bumping
         const Snake& const_snake = snake;
-        if (snake.is_body_except_head(const_snake.body_head())) {   // Snake's body as obstacle
-            cout << "Bumped into the snake's body\n";
+        if (snake.is_body_except_head(const_snake.body_head())      // Snake's body as obstacle
+            || !is_grid(field, const_snake.body_head()))            // Grid's border as obstacle
             // Pause after losed game
             return Fl::add_timeout(0.0, [](Address pw) { cb_pause(nullptr, pw); }, this);;
-        }
-        if (!is_grid(field, const_snake.body_head())) {             // Grid's border as obstacle
-            cout << "Bumped into the grid's border\n";
-            // Pause after losed game
-            return Fl::add_timeout(0.0, [](Address pw) { cb_pause(nullptr, pw); }, this);
-        }
         // Snake's eating
         if (snake.point(0) == fruit.point(0)) {
             snake.grow_length();
             put_score();                // Update score after eating
-            cout << "Ate the fruit; the length becomes equal to " << snake.length() << '\n';
             // Randomly change location of fruit to everywhere, except snake's body
             while (snake.is_body(fruit))
                 random_move(fruit, field.point(0), field.width() - fruit.width(), field.height() - fruit.height());
         }
         else snake.move_forward();      // Snake's moving
-        cout << "Moved to (" << snake.point(0).x << ", " << snake.point(0).y << ")\n";
         redraw();                       // Redraw window after made changes
     }
 
@@ -229,10 +216,8 @@ down.
     // paused, that is, pause prevents snake's moves
     void Snake_window::pause()
     {
-        if (!is_pause()) {
+        if (!is_pause())
             Fl::remove_timeout(cb_game_loop, this);     // Stop timeout
-            cout << "Paused the game\n";
-        }
         else start();                                   // Start timeout
     }
 
@@ -248,7 +233,6 @@ down.
             snake.move_forward();
         move_to(&snake, snake_xy);
         move_to(&fruit, fruit_xy);
-        cout << "Started the new game; shrank the length to " << snake.length() << '\n';
         put_score();                                // Update score after shrinking
         redraw();                                   // Redraw window after made changes
     }
@@ -257,7 +241,6 @@ down.
     void Snake_window::quit()
     {
         Window::hide();         // Hide window to close it
-        cout << "Quited the game\n";
     }
 
     // Hides game button and shows game menu, if game button is pressed,
@@ -269,14 +252,12 @@ down.
             game_button.hide();
             game_menu.show();
             help_button.move(game_menu.selection.size() * game_menu.width - help_button.width, 0);
-            cout << "Hid the game button and showed the game menu\n";
         }
         // Hide game menu and show game button
         else {                              // Game menu is pressed
             game_menu.hide();
             game_button.show();
             help_button.move(help_button.width - game_menu.selection.size() * game_menu.width, 0);
-            cout << "Hid the game menu and showed the game button\n";
         }
     }
 
@@ -289,14 +270,12 @@ down.
             game_menu.selection[pause_ind].deactivate();
             hide_graphics();
             help_box.show();
-            cout << "Showed the help box\n";
         }
         // Hide help box
         else {                          // Help box is visible
             game_menu.selection[pause_ind].activate();
             help_box.hide();
             show_graphics();
-            cout << "Hid the help box\n";
         }
     }
 
@@ -311,11 +290,8 @@ down.
     {
         int score = current_score();
         score_box.put(score);                   // Write current score
-        if (score > max_score_box.get_int()) {  // New record
+        if (score > max_score_box.get_int())    // New record
             max_score_box.put(score);           // Write max score
-            cout << "Updated the max score to " << score << '\n';
-        }
-        cout << "Updated the current score to " << score << '\n';
     }
 
     // Shows game's graphics, that is, makes field, snake, and fruit visible
@@ -329,7 +305,6 @@ down.
         snake.head_set_fill_color(Color::yellow);
         fruit.set_color(Color::black);
         fruit.set_fill_color(Color::red);
-        cout << "Showed the graphics\n";
     }
 
     // Hides game's graphics, that is, makes field, snake, and fruit invisible
@@ -343,7 +318,6 @@ down.
         snake.head_set_fill_color(Color::invisible);
         fruit.set_color(Color::invisible);
         fruit.set_fill_color(Color::invisible);
-        cout << "Hid the graphics\n";
     }
 
 	//------------------------------------------------------------------------------
