@@ -246,10 +246,8 @@ down.
         snake.set_direction(Snake::Direction::right);
         for (int i = 0; i < snake_sz; ++i)
             snake.move_forward();
-        snake.move(-snake.point(0).x, -snake.point(0).y);       // Top-left angle of window
-        snake.move(snake_xy.x, snake_xy.y);
-        fruit.move(-fruit.point(0).x, -fruit.point(0).y);       // Top-left angle of window
-        fruit.move(fruit_xy.x, fruit_xy.y);
+        move_to(&snake, snake_xy);
+        move_to(&fruit, fruit_xy);
         cout << "Started the new game; shrank the length to " << snake.length() << '\n';
         put_score();                                // Update score after shrinking
         redraw();                                   // Redraw window after made changes

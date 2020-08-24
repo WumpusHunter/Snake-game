@@ -2,14 +2,15 @@
   • Move the help text out of the constructor, and use a raw string literal to construct it +
   • Give a proper name to the dereferenced objects +
   • Use assert in place of the throwing exceptions in the places where data is independent of the user +
-  • Make the game menu buttons a member variables of the game window
-  • Avoid moving points unnecessarily, for instance to the origin, and then to the required point
+  • Make the game menu buttons a member variables of the game window +
+  • Avoid moving points unnecessarily, for instance to the origin, and then to the required point +
+  • Use more appropriate container to keep the body of the snake +
+  • Keep the body of the snake properly +
+  • Simplify and optimize growing of the snake's body +
+  • Simplify and optimize moving forward of the snake's body +
   • Remove the debug statements
   • Stop catching errors which aren't handled ?
   • Stop specifying the window position ?
-  • Keep the body of the snake properly ?
-  • Use more appropriate container to keep the body of the snake ?
-  • Simplify growing of the snake's body ?
 
 • Documentation
 
