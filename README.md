@@ -2,7 +2,7 @@
 
 ## Description
 
-This is 2D Snake game written using C++, FLTK, and built-up library for FLTK written by Bjarne Stroustrup.
+This is a 2D Snake game written using C++, FLTK, and built-up library for FLTK written by Bjarne Stroustrup.
 
 ## Screenshot
 
